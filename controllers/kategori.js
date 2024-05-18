@@ -1,0 +1,126 @@
+const modelKategori = require('../models/kategori')
+const {Op, where, Model} = require('sequelize')
+
+const tampilKategori =  (req,res) =>{
+    try{
+        const findAllKategori =  modelKategori.findAll({
+        });
+        if (findAllKategori.length > 0) {
+            res.status(200).json({ success: true, message: 'Data kategori tersedia', data: findAllKategori });
+        } else {
+            res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: findAllKategori });
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error });
+    }
+}
+
+const addKategori = async(req,res) =>{
+    try {
+        const {nama_kategori} = req.body
+        if(!nama_kategori){
+            return res.status(400).json({ success: false, message: 'Maaf masukkan nama kategori terlebih dahulu'})
+        }
+        const findKategori = await modelKategori.findOne({
+            where: {
+                nama_kategori: nama_kategori
+            }
+        })
+        
+        if (findKategori) {
+            return res.status(400).json({success: false, message:"Kategori tersebut telah ada"})
+        }
+
+        const tambahKategori = await modelKategori.create({
+            nama_kategori: nama_kategori
+        })
+
+        if (tambahKategori) {
+            res.status(200).json({success: true, message:"Kategori berhasil ditambah"})
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error });
+    }
+}
+
+const deleteKategori = async(req,res)=>{
+    try {
+        const {id_kategori} = req.params
+        console.log(id_kategori);
+        const hapus = await modelKategori.destroy({
+            where:{
+                id_kategori: id_kategori
+            }
+        })
+
+        if (hapus) {
+            return res.status(200).json({
+                success: true,
+                message:"data berhasil dihapus"
+            })
+        } else {
+            return res.status(500).json({
+                success: false,
+                message: "data gagal dihapus"
+            })
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ success: false, message: error });
+    }
+}
+
+const updateKategori = async(req,res)=>{
+    try {
+    const {nama_kategori} = req.body
+    const {id_kategori} = req.params
+        console.log(nama_kategori);
+    const findKategori = await modelKategori.findOne({
+        where:{
+            nama_kategori: nama_kategori
+        }
+    })
+    if (findKategori) {
+        return res.status(400).json({
+            success: false,
+            message:"kategori tersebut telah ada"
+        })
+       
+    }
+    
+    const doneUpdate = await modelKategori.update({
+            nama_kategori: nama_kategori
+    },{
+        where:{
+            id_kategori: id_kategori
+        }
+    })
+
+    if(doneUpdate){
+        res.status(200).json({success: true,
+            message: "data berhasil diupdate"
+        })
+        return
+    }else{
+        res.status(400).json({
+            success: false,
+            message:"data gagal diupdate"
+        })
+        return
+    }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            success: false,
+            message:"data gagal diupdate"
+        })
+    }
+}
+module.exports = {
+    tampilKategori,
+    addKategori,
+    deleteKategori,
+    updateKategori
+}

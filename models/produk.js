@@ -3,10 +3,10 @@ const sequelize = require('../config/dbConfig')
 
 const produk = sequelize.define('produk', {
     id_produk:{
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+        autoIncrement: true
     },
     id_kategori:{
         type: DataTypes.UUID,

@@ -3,10 +3,10 @@ const sequelize = require('../config/dbConfig')
 
 const kategori = sequelize.define('kategori', {
     id_kategori:{
-        type: DataTypes.UUID,
+        type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
-        defaultValue: DataTypes.UUIDV4
+        autoIncrement: true
     },
     nama_kategori: {
         type: DataTypes.STRING(50),

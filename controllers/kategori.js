@@ -1,11 +1,11 @@
 const modelKategori = require('../models/kategori')
 const {Op, where, Model} = require('sequelize')
 
-const tampilKategori =  (req,res) =>{
+const tampilKategori = async(req,res) =>{
     try{
-        const findAllKategori =  modelKategori.findAll({
-        });
-        if (findAllKategori.length > 0) {
+        const findAllKategori = await modelKategori.findAll();       //ambil semua data
+        console.log(findAllKategori.length)
+        if (findAllKategori.length > 0) {       //di cek dulu berapa penjang data yang didapat, karena datanya berupa array, jadi length nya dapat diketahui, jika tidak ada data, maka length nya 0
             res.status(200).json({ success: true, message: 'Data kategori tersedia', data: findAllKategori });
         } else {
             res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: findAllKategori });
@@ -22,7 +22,7 @@ const addKategori = async(req,res) =>{
         if(!nama_kategori){
             return res.status(400).json({ success: false, message: 'Maaf masukkan nama kategori terlebih dahulu'})
         }
-        const findKategori = await modelKategori.findOne({
+        const findKategori = await modelKategori.findOne({      //dipastikan dulu apakah kategori sudah ada atau belum, dengan mencari nama kategori yang sama dengan yang diinput user pada req.body
             where: {
                 nama_kategori: nama_kategori
             }
@@ -32,7 +32,7 @@ const addKategori = async(req,res) =>{
             return res.status(400).json({success: false, message:"Kategori tersebut telah ada"})
         }
 
-        const tambahKategori = await modelKategori.create({
+        const tambahKategori = await modelKategori.create({     //jika tidak ada, maka inputkan kategori ke database
             nama_kategori: nama_kategori
         })
 

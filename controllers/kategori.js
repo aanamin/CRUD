@@ -5,7 +5,7 @@ const tampilKategori = async(req,res) =>{
     try{
         const dataKategori = await modelKategori.findAll();       //ambil semua data
 
-        console.log(dataKategori);
+        // console.log(dataKategori);
 
         if (dataKategori.length > 0) {       //di cek dulu berapa penjang data yang didapat, karena datanya berupa array, jadi length nya dapat diketahui, jika tidak ada data, maka length nya 0
             res.status(200).render('kategori', {dataKategori});
@@ -41,7 +41,8 @@ const addKategori = async(req,res) =>{
         })
 
         if (tambahKategori) {
-            res.status(200).json({success: true, message:"Kategori berhasil ditambah"})
+            // res.status(200).json({success: true, message:"Kategori berhasil ditambah"})
+            res.status(200).redirect('/kategori')
         }
     } catch (error) {
         console.log(error);
@@ -58,18 +59,21 @@ const deleteKategori = async(req,res)=>{
                 id_kategori: id_kategori
             }
         })
+        console.log(hapus);
+        // if (hapus) {
+        //     return res.status(200).json({
+        //         success: true,
+        //         message:"data berhasil dihapus"
+        //     })
+        // } else {
+        //     return res.status(500).json({
+        //         success: false,
+        //         message: "data gagal dihapus"
+        //     })
+        // }
 
-        if (hapus) {
-            return res.status(200).json({
-                success: true,
-                message:"data berhasil dihapus"
-            })
-        } else {
-            return res.status(500).json({
-                success: false,
-                message: "data gagal dihapus"
-            })
-        }
+        res.status(200).redirect('/kategori');
+
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: error });

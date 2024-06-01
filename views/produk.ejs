@@ -14,7 +14,7 @@
 
       <div class="row justify-content-end">
         <div class="col-sm-2">
-          <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#exampleModal">
+          <button type="button" class="btn btn-primary " data-bs-toggle="modal" data-bs-target="#modalTambahProduk">
             Tambah Produk
           </button>
         </div>
@@ -22,26 +22,32 @@
       <!-- Button trigger modal -->
 
       <!-- Modal -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal fade" id="modalTambahProduk" tabindex="-1" aria-labelledby="modalTambahKategoriLabel" aria-hidden="true">
         <div class="modal-dialog">
           <div class="modal-content">
             <div class="modal-header">
-              <h1 class="modal-title fs-5" id="exampleModalLabel">Tambah Produk</h1>
+              <h1 class="modal-title fs-5" id="modalTambahKategoriLabel">Tambah Produk</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <form>
+            <form action="/produk" method="post">
               <div class="modal-body">
                 <div class="mb-3">
                   <label for="namaproduk" class="form-label">Nama Produk</label>
-                  <input type="text" class="form-control" id="namaproduk">
+                  <input type="text" class="form-control" id="namaproduk" name="nama" required>
                 </div>
                 <div class="mb-3">
                   <label for="hargaproduk" class="form-label">Harga Produk</label>
-                  <input type="text" class="form-control" id="hargaproduk">
+                  <input type="number" class="form-control" id="hargaproduk" name="harga" required>
                 </div>
                 <div class="mb-3">
                   <label for="kategori" class="form-label">Kategori Produk</label>
-                  <input type="text" class="form-control" id="kategori">
+                  <!-- <input type="text" class="form-control" id="kategori" name="idkategori"> -->
+                  <select class="form-select" aria-label="Default select example" name="idkategori" id="kategori" required>
+                    <option selected>Pilih kategori</option>
+                    <% dataKategori.forEach(dk => { %>
+                      <option value="<%= dk.id_kategori %>"><%= dk.nama_kategori %></option>
+                    <% }) %>
+                  </select>
                 </div>
                 <p>*ID produk dibuatkan secara otomatis</p>
               </div>
@@ -49,7 +55,7 @@
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
                 <button type="submit" class="btn btn-primary">Tambah</button>
               </div>
-              </form>
+            </form>
           </div>
         </div>
       </div>
@@ -70,7 +76,7 @@
               <th scope="row"><%= data.id_produk %></th>
               <td><%= data.nama_produk %></td>
               <td><%= data.harga %></td>
-              <td><%= data.id_kategori %></td>
+              <td><%= data.kategori.nama_kategori %></td>
               <td>
                 <!-- Button trigger modal edit -->
                 <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#modalEdit<%= data.id_produk %>" title="Edit data produk">
@@ -103,7 +109,12 @@
                         </div>
                         <div class="mb-3">
                           <label for="kategori" class="form-label">Kategori Produk</label>
-                          <input type="text" class="form-control" id="kategori" value="<%= data.id_kategori %>">
+                          <select class="form-select" aria-label="Default select example" name="idkategori" id="kategori" required>
+                            <option selected>Pilih kategori</option>
+                            <% dataKategori.forEach(dk => { %>
+                              <option value="<%= dk.id_kategori %>"><%= dk.nama_kategori %></option>
+                            <% }) %>
+                          </select>
                         </div>
 
                       </div>
@@ -136,7 +147,9 @@
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
-                        <button type="button" class="btn btn-danger">Hapus data produk</button>
+                        <form action="/produk/hapus/<%= data.id_produk %>" method="get">
+                          <button type="submit" class="btn btn-danger">Hapus data produk</button>
+                        </form>
                       </div>
                     </div>
                   </div>

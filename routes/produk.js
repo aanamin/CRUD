@@ -1,7 +1,9 @@
 const express = require('express')
 const router = express.Router()
-const controller = require('../controllers/produk')
+const {tampilProduk, tambahProduk, hapusProduk} = require('../controllers/produk')
 
-router.get('/', controller.tampilProduk)
+router.get('/', tampilProduk);
+router.post('/', tambahProduk);
+router.get('/hapus/:idproduk', hapusProduk)     //harusnya menggunakan method delete, tapi supaya lebih mudah pakai get saja
 
 module.exports = router

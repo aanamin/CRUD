@@ -3,13 +3,17 @@ const {Op, where, Model} = require('sequelize')
 
 const tampilKategori = async(req,res) =>{
     try{
-        const findAllKategori = await modelKategori.findAll();       //ambil semua data
-        console.log(findAllKategori.length)
-        if (findAllKategori.length > 0) {       //di cek dulu berapa penjang data yang didapat, karena datanya berupa array, jadi length nya dapat diketahui, jika tidak ada data, maka length nya 0
-            res.status(200).json({ success: true, message: 'Data kategori tersedia', data: findAllKategori });
+        const dataKategori = await modelKategori.findAll();       //ambil semua data
+
+        console.log(dataKategori);
+
+        if (dataKategori.length > 0) {       //di cek dulu berapa penjang data yang didapat, karena datanya berupa array, jadi length nya dapat diketahui, jika tidak ada data, maka length nya 0
+            res.status(200).render('kategori', {dataKategori});
         } else {
-            res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: findAllKategori });
+            res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: dataKategori });
         }
+
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: error });

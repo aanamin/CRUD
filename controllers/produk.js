@@ -5,15 +5,14 @@ const {Op,where, Model} = require('sequelize')
 
 const tampilProduk = async (req,res) =>{
     try{
-        const findAllKategori = await modelProduk.findAll({
-            
-        });
+        const dataProduk = await modelProduk.findAll();
 
-        if (findAllKategori.length > 0) {
-            res.status(200).json({ success: true, message: 'Data kategori tersedia', data: findAllKategori });
+        if (dataProduk.length > 0) {
+            res.status(200).render('produk', {dataProduk});
         } else {
-            res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: findAllKategori });
+            res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: dataProduk });
         }
+
     } catch (error) {
         console.log(error);
         res.status(500).json({ success: false, message: error });

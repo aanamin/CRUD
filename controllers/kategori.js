@@ -107,10 +107,11 @@ const updateKategori = async(req,res)=>{
     })
 
     if(doneUpdate){
-        res.status(200).json({success: true,
-            message: "data berhasil diupdate"
-        })
-        return
+        // res.status(200).json({success: true,
+        //     message: "data berhasil diupdate"
+        // })
+        // return
+        return res.redirect('/kategori')
     }else{
         res.status(400).json({
             success: false,

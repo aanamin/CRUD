@@ -16,7 +16,7 @@ const tampilProduk = async (req,res) =>{
         //     res.status(400).json({ success: false, message: 'Data kategori tidak tersedia', data: dataProduk });
         // }
 
-        console.log(dataProduk);
+        // console.log(dataProduk);
         // return res.json(dataProduk)
 
         const dataKategori = await modelKategori.findAll({
@@ -88,9 +88,40 @@ const hapusProduk = async (req,res) =>{
     }
 };
 
+const editProduk = async (req,res) =>{
+    try{
+        const {idproduk} = req.params;
+        const {nama_produk, harga, id_kategori} = req.body;
+
+        const findProduk = await modelProduk.findOne({      //dipastikan dulu apakah kategori sudah ada atau belum, dengan mencari nama kategori yang sama dengan yang diinput user pada req.body
+            where: {
+                id_produk: idproduk
+            }
+        });
+
+        if (!findProduk) return res.status(400).json({success: false, message:"Produk tersebut tidak ada"});
+
+        const edit = await modelProduk.update({
+            nama_produk, harga, id_kategori
+        }, {
+            where: {
+                id_produk: idproduk
+            }
+        });
+
+        console.log(edit);
+
+        return res.status(200).redirect('/produk');
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ success: false, message: error });
+    }
+};
+
 
 
 
 module.exports = {
-    tampilProduk, tambahProduk, hapusProduk
+    tampilProduk, tambahProduk, hapusProduk, editProduk
 }

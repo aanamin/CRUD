@@ -93,7 +93,7 @@
                         <h1 class="modal-title fs-5" id="editModalLabel">Edit Produk</h1>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
-                      <form>
+                      <form action="/produk/edit/<%= data.id_produk %>" method="post">
                       <div class="modal-body">
                         <div class="mb-3">
                           <label for="idproduk" class="form-label">ID Produk</label>
@@ -101,16 +101,15 @@
                         </div>
                         <div class="mb-3">
                           <label for="namaproduk" class="form-label">Nama Produk</label>
-                          <input type="text" class="form-control" id="namaproduk" value="<%= data.nama_produk %>">
+                          <input type="text" class="form-control" id="namaproduk" value="<%= data.nama_produk %>" name="nama_produk">
                         </div>
                         <div class="mb-3">
                           <label for="hargaproduk" class="form-label">Harga Produk</label>
-                          <input type="text" class="form-control" id="hargaproduk" value="<%= data.harga %>">
+                          <input type="number" class="form-control" id="hargaproduk" value="<%= data.harga %>" name="harga">
                         </div>
                         <div class="mb-3">
                           <label for="kategori" class="form-label">Kategori Produk</label>
-                          <select class="form-select" aria-label="Default select example" name="idkategori" id="kategori" required>
-                            <option selected>Pilih kategori</option>
+                          <select class="form-select" aria-label="Default select example" name="id_kategori" id="kategori" required>
                             <% dataKategori.forEach(dk => { %>
                               <option value="<%= dk.id_kategori %>"><%= dk.nama_kategori %></option>
                             <% }) %>
